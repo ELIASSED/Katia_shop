@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-6 py-3">
         <div className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold text-gray-800">
-            Katia Art
+            Katia Shop
           </Link>
           <div className="hidden md:flex space-x-6">
             <NavLink href="/" text="Accueil" isActive={isActive('/')} />

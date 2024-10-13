@@ -2,9 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Appliquer un fond blanc sable global */
+body {
+  @apply bg-amber-50 text-gray-900;
+}
+
 @supports (font: -apple-system-body) and (-webkit-appearance: none) {
   img[loading="lazy"] {
     clip-path: inset(0.6px);
   }
 }
-

@@ -19,8 +19,8 @@ const Layout = ({ title, description, children }: { title: string; description: 
         <nav className="fixed top-0 left-0 w-full bg-white z-50 shadow-md">
           <div className="container mx-auto px-6 py-3">
             <div className="flex justify-between items-center">
-              <Link href="/" passHref>
-                <a className="text-2xl font-bold text-gray-800">Katia Art</a>
+              <Link href="/" passHref className="text-2xl font-bold text-gray-800">
+                Katia Art
               </Link>
               <div className="hidden md:flex space-x-6">
                 <NavLink href="/" text="Accueil" isActive={isActive('/')} />
@@ -39,9 +39,7 @@ const Layout = ({ title, description, children }: { title: string; description: 
       <main className="container mx-auto p-4 pt-20"> {/* Ajout de pt-20 pour compenser le header fixe */}
         {children}
       </main>
-      <footer className="bg-gray-100 p-4 text-center">
-        <p>&copy; 2024 Katia Shop</p>
-      </footer>
+    
     </div>
   );
 };

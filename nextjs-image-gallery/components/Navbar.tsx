@@ -32,10 +32,10 @@ const Navbar: React.FC = () => {
 };
 
 const NavLink: React.FC<{ href: string; text: string; isActive: boolean }> = ({ href, text, isActive }) => (
-  <Link 
-    href={href} 
+  <Link
+    href={href}
     className={`text-sm uppercase ${isActive ? 'text-black font-bold' : 'text-gray-600 hover:text-gray-900'}`}
-  >
+    legacyBehavior>
     {text}
   </Link>
 );

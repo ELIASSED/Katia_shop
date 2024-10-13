@@ -8,11 +8,3 @@
   }
 }
 
-/* styles/globals.css */
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background-color: rgba(220, 220, 220, 1); /* Appliquer la couleur de fond */
-}

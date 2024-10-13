@@ -1,21 +1,15 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  images: {
-    formats: ["image/avif", "image/webp"],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-        port: "",
-        pathname: `/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/home/*`, // Ajoutez "home/*" pour inclure le dossier des images
-      },
-    ],
+module.exports = {
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
   },
-  env: {
-    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
-    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
-    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+  images: {
+    domains: ['res.cloudinary.com'],
   },
 };
-
-module.exports = nextConfig;

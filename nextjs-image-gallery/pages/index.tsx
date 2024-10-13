@@ -1,21 +1,15 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react"
 import Modal from "../components/Modal";
 import cloudinary from "../utils/cloudinary";
 import getBase64ImageUrl from "../utils/generateBlurPlaceholder";
 import type { ImageProps } from "../utils/types";
 import { useLastViewedPhoto } from "../utils/useLastViewedPhoto";
-
-const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
-  const router = useRouter();
-  const { photoId } = router.query;
+import Layout from "../components/Layout";
+const Home: NextPage<{ images: ImageProps[] }> = ({ images }) => {
+  const { photoId } = useRouter().query;
   const [lastViewedPhoto, setLastViewedPhoto] = useLastViewedPhoto();
-
-
   const lastViewedPhotoRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -25,37 +19,32 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
     }
   }, [photoId, lastViewedPhoto, setLastViewedPhoto]);
 
-
   return (
-    <>
-      <Head>
-        <title>Katia Art Gallery</title>
-        <meta name="description" content="Explorez la galerie d'art photographique de Katia" />
-        <meta property="og:image" content="https://votre-domaine.com/og-image.png" />
-        <meta name="twitter:image" content="https://votre-domaine.com/og-image.png" />
-      </Head>
-      <header className="fixed top-0 left-0 w-full bg-white z-50 shadow-md">
-        <nav className="container mx-auto px-6 py-3 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-gray-800">
-            Katia Art
-          </Link>
-          
-        </nav>
-      </header>
-      <main className="container mx-auto px-6 pt-20 pb-12">
-        {photoId && (
-          <Modal
-            images={images}
-            onClose={() => {
-              setLastViewedPhoto(photoId);
-            }}
-          />
-        )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          
-        </div>
-      </main>
-    </>
+    <Layout
+      title="Katia Art Gallery"
+      description="Explorez la galerie d'art photographique de Katia"
+    >
+      {photoId && (
+        <Modal
+          images={images}
+          onClose={() => {
+            setLastViewedPhoto(photoId);
+          }}
+        />
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {images.map((image) => (
+          <div key={image.public_id} className="overflow-hidden rounded-lg">
+            <img
+              src={`https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,h_300,w_300/${image.public_id}`}
+              alt={image.public_id}
+              className="object-cover w-full h-full"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    </Layout>
   );
 };
 
@@ -70,9 +59,8 @@ export async function getStaticProps() {
     .execute();
 
   let reducedResults: ImageProps[] = [];
-
-  let i = 0;
-  for (let result of results.resources) {
+  for (let i = 0; i < results.resources.length; i++) {
+    const result = results.resources[i];
     reducedResults.push({
       id: i,
       height: result.height,
@@ -80,7 +68,6 @@ export async function getStaticProps() {
       public_id: result.public_id,
       format: result.format,
     });
-    i++;
   }
 
   const blurImagePromises = results.resources.map((image: ImageProps) => {
@@ -88,6 +75,7 @@ export async function getStaticProps() {
   });
   const imagesWithBlurDataUrls = await Promise.all(blurImagePromises);
 
+  // Associer les URL de blur avec les résultats
   for (let i = 0; i < reducedResults.length; i++) {
     reducedResults[i].blurDataUrl = imagesWithBlurDataUrls[i];
   }

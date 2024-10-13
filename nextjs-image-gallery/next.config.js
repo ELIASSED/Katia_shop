@@ -7,7 +7,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "res.cloudinary.com",
         port: "",
-        pathname: `/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/**`,
+        pathname: `/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/home/*`, // Ajoutez "home/*" pour inclure le dossier des images
       },
     ],
   },
